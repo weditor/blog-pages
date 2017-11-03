@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { render } from 'react-dom'
+import { Button } from 'react-bootstrap'
 
 
 function calculateWinner(squares) {
@@ -129,6 +130,11 @@ class Game extends React.Component<any, any> {
                 <div className="game-info">
                     <div>{ status }</div>
                     <ol>{moves}</ol>
+                </div>
+                <div>
+                    <Button bsStyle="success" bsSize="small">
+                        Something
+                    </Button>
                 </div>
             </div>
         )
