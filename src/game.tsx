@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Button } from 'react-bootstrap'
+import * as MarkdownIt from 'markdown-it'
 
 
 function calculateWinner(squares) {
@@ -120,6 +121,8 @@ class Game extends React.Component<any, any> {
         else {
             status = 'Next Player:' + (this.state.xIsNext? 'X': 'O');
         }
+        let md = new MarkdownIt();
+        let htmlStr = md.render("# this is header\n## this is second header");
         return (
             <div className="game">
                 <div className="game-board">
@@ -136,6 +139,7 @@ class Game extends React.Component<any, any> {
                         Something
                     </Button>
                 </div>
+                <div dangerouslySetInnerHTML={{ __html: htmlStr }}/>
             </div>
         )
     }
