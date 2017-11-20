@@ -2,6 +2,7 @@ import * as React from 'react'
 import { render } from 'react-dom'
 import { Button, Table } from 'react-bootstrap'
 import * as MarkdownIt from 'markdown-it'
+import { Link } from 'react-router-dom'
 
 
 
@@ -18,6 +19,16 @@ class BlogList extends React.Component<any, any>{
             this.setState({'blog_list': res});
         })
     }
+
+    componentDidMount(){
+        console.log(this.props)
+    }
+
+    // openArticle(blog_id){
+    //     console.log('openArticle');
+    //     // history.push(this.props.match.url+'/' + blog_id);
+    //     return true;
+    // }
 
     render() {
         return (<Table responsive>
@@ -37,7 +48,14 @@ class BlogList extends React.Component<any, any>{
                     return(
                         <tr key={ item.id }>
                             <td>{ index+1 }</td>
-                            <td>{ item["title"] }</td>
+                            <td><Link to={this.props.match.url+'/' + item.id} >
+                                {/* onClick={(event)=> {
+                                    event.preventDefault();
+                                    this.openArticle(item.id)
+                                }} 
+                            >*/}
+                            { item["title"] }
+                            </Link></td>
                             <td>{ item["create_time"] }</td>
                         </tr>
                     )

@@ -121,6 +121,10 @@ class Game extends React.Component<any, any> {
         else {
             status = 'Next Player:' + (this.state.xIsNext? 'X': 'O');
         }
+        let json_data = {fuck: 43, sons: {
+            first: 'jack',
+            second: 'tom',
+        }}
         let md = new MarkdownIt();
         let htmlStr = md.render("# this is header\n## this is second header");
         return (
