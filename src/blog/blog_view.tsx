@@ -44,11 +44,11 @@ class BlogView extends React.Component<any, any> {
         } else {
             return <div>
                 <div >
-                    <span className="h2">{this.state.title}</span>
+                    <span className="h2" style={{fontWeight: "bolder"}}>{this.state.title}</span>
                     <i className="fa fa-pencil-square-o edit-btn" onClick={()=>this.onEditClick()}></i>
                 </div>
                 <hr />
-                </div>
+            </div>
         }
         
     }
@@ -125,7 +125,6 @@ class BlogView extends React.Component<any, any> {
     render() {
         return (
             <div>
-                
                 <form>
                     {this.render_title()}
                     {this.render_body()}
@@ -139,4 +138,87 @@ class BlogView extends React.Component<any, any> {
 }
 
 
-export { BlogView }
+// class BlogCreate extends BlogView {
+//     componentDidMount() {
+        
+//     }
+// }
+
+class BlogCreate extends React.Component<any, any> {
+    md = MarkdownIt()
+    constructor(props){
+        super(props);
+        // console.log(props)
+        this.state = {
+            title: "",
+            content: "",
+        }
+    }
+
+    componentDidMount() {
+    }
+
+    render_title() {
+        return <FormGroup>
+            <ControlLabel>标题</ControlLabel>
+            <FormControl onChange={(e)=>this.setState({title: e.target.value})} value={this.state.title}/>
+        </FormGroup>
+    }
+
+    render_body() {
+        return <FormGroup>
+            <ControlLabel>内容</ControlLabel>
+            <FormControl componentClass="textarea" rows="20" onChange={(e)=>this.setState({content: e.target.value})} value={this.state.content}/>
+        </FormGroup>
+    }
+
+    render_tag() {
+        return <div>
+            </div>
+    }
+
+    render_button() {
+        return <div>
+            <div className="op-btn-group">
+                <Button bsStyle="danger" onClick={()=>this.onCancel()}>取消</Button>
+                <Button bsStyle="primary" onClick={()=>this.onSave()}>保存</Button>
+            </div>
+        </div>
+    }
+
+    onSave() {
+        fetch(`/blog/article/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                'title': this.state.title,
+                'content': this.state.content,
+            })
+        })
+        .then(res=>res.json())
+        .then(res=>{
+            this.props.history.push(`/blog/view/${res.id}/`);
+        })
+    }
+    
+    onCancel() {
+        this.props.history.push(`/blog/`);
+    }
+
+    render() {
+        return (
+            <div>
+                <form>
+                    {this.render_title()}
+                    {this.render_body()}
+                    {this.render_tag()}
+                    {this.render_button()}
+                </form>
+            </div>
+        )
+    }
+}
+
+export { BlogView, BlogCreate }

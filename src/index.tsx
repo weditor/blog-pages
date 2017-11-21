@@ -51,7 +51,6 @@ class IndexPage extends React.Component<any, any> {
                 <Route exact path='/' component={Home} />
                 <Route path='/hello' component={Hello} />
                 <Route path='/game' component={Game} />
-                <Route path='/games/:id' component={Game} />
                 <Route path='/blog' component={BlogIndex} />
             </div>
         </Router>

@@ -24,29 +24,36 @@ class BlogList extends React.Component<any, any>{
         console.log(this.props)
     }
 
+    createBlog(){
+        this.props.history.push(`${this.props.match.url}/create`)
+    }
+
     render() {
-        return (<Table responsive>
-            <thead>
-            <tr>
-                <th>#</th>
-                <th>标题</th>
-                <th>发布时间</th>
-            </tr>
-            </thead>
-            <tbody>
-                { this.state.blog_list.map((item,index)=>{
-                    return(
-                        <tr key={ item.id }>
-                            <td>{ index+1 }</td>
-                            <td><Link to={this.props.match.url+'/' + item.id} >
-                                { item["title"] }
-                            </Link></td>
-                            <td>{ item["create_time"] }</td>
-                        </tr>
-                    )
-                }) }
-            </tbody>
-        </Table>)
+        return (<div>
+            <Button bsStyle="primary" onClick={()=>this.createBlog()}><i className="fa fa-plus-circle"></i>新建</Button>
+            <Table responsive>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>标题</th>
+                    <th>发布时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                    { this.state.blog_list.map((item,index)=>{
+                        return(
+                            <tr key={ item.id }>
+                                <td>{ index+1 }</td>
+                                <td><Link to={this.props.match.url+'/view/' + item.id} >
+                                    { item["title"] }
+                                </Link></td>
+                                <td>{ item["create_time"] }</td>
+                            </tr>
+                        )
+                    }) }
+                </tbody>
+            </Table>
+        </div>)
     }
 }
 
