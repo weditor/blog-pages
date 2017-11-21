@@ -1,0 +1,20 @@
+
+body {
+    margin: 20px;
+}
+
+.edit-btn {
+    margin-top: 5px;
+    margin-left: 10px;
+    color: #30811b;
+    cursor: pointer;
+}
+
+
+.op-btn-group {
+    float: right;
+}
+
+.op-btn-group>button {
+    margin: 10px;
+}

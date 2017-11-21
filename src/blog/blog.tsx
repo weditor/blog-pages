@@ -24,12 +24,6 @@ class BlogList extends React.Component<any, any>{
         console.log(this.props)
     }
 
-    // openArticle(blog_id){
-    //     console.log('openArticle');
-    //     // history.push(this.props.match.url+'/' + blog_id);
-    //     return true;
-    // }
-
     render() {
         return (<Table responsive>
             <thead>
@@ -40,21 +34,12 @@ class BlogList extends React.Component<any, any>{
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>fuck</td>
-                    <td>{ (new Date()).toUTCString() }</td>
-                </tr>
                 { this.state.blog_list.map((item,index)=>{
                     return(
                         <tr key={ item.id }>
                             <td>{ index+1 }</td>
                             <td><Link to={this.props.match.url+'/' + item.id} >
-                                {/* onClick={(event)=> {
-                                    event.preventDefault();
-                                    this.openArticle(item.id)
-                                }} 
-                            >*/}
-                            { item["title"] }
+                                { item["title"] }
                             </Link></td>
                             <td>{ item["create_time"] }</td>
                         </tr>
