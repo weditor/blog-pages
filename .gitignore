@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+/statics/mathjax-2.7.2/
+/statics/mermaid/

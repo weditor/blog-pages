@@ -47,7 +47,7 @@ class IndexPage extends React.Component<any, any> {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-    
+
                 <Route exact path='/' component={Home} />
                 <Route path='/hello' component={Hello} />
                 <Route path='/game' component={Game} />

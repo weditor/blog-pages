@@ -30,14 +30,6 @@ module.exports={
                     presets:['es2015','react']
                 }
             },
-            // {
-            //     test:/\.(png|jpg)$/,
-            //     loader:'url-loader?limit=8192'
-            // },
-            // {
-            //     test:/\.less$/,
-            //     loader:'style-loader!css-loader!less-loader'
-            // }
         ],
     },
     resolve:{

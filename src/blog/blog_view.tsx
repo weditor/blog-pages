@@ -1,11 +1,31 @@
 import * as React from 'react'
-import { render } from 'react-dom'
+import {findDOMNode} from 'react-dom'
 import { Button, Table, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
 import * as MarkdownIt from 'markdown-it'
+import * as Highlightjs from 'markdown-it-highlightjs'
+import * as MarkdownMathjax from 'markdown-it-mathjax'
+import markdownItMermaid from 'markdown-it-mermaid'
 
+
+class MarkdownView extends React.Component<any, any> {
+    constructor() {
+        super()
+    }
+
+    componentDidMount() {
+        // console.log('mount makrdown')
+        // MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this)]);
+    }
+
+    render() {
+        return <div dangerouslySetInnerHTML={{ __html: this.props.content?this.props.md.render(this.props.content):"" }} />
+    }
+}
 
 class BlogView extends React.Component<any, any> {
-    md = MarkdownIt()
+    md = MarkdownIt().use(Highlightjs)
+            .use(new MarkdownMathjax())
+            .use(markdownItMermaid)
     constructor(props){
         super(props);
         console.log(props)
@@ -31,6 +51,9 @@ class BlogView extends React.Component<any, any> {
                 'title': res.title,
                 'content': res.content,
                 'edit': edit
+            }, ()=>{
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this.refs['md_view'])]);
+                mermaid.init();
             })
         })
     }
@@ -60,7 +83,7 @@ class BlogView extends React.Component<any, any> {
                 <FormControl componentClass="textarea" rows="20" onChange={(e)=>this.setState({content: e.target.value})} value={this.state.content}/>
             </FormGroup>
         } else {
-            return <div dangerouslySetInnerHTML={{ __html: this.state.content?this.md.render(this.state.content):"" }} />
+            return <MarkdownView ref="md_view" content={this.state.content} md={this.md} />
         }
     }
 
@@ -110,6 +133,9 @@ class BlogView extends React.Component<any, any> {
                 'title': res.title,
                 'content': res.content,
                 'edit': false
+            }, ()=>{
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this.refs['md_view'])]);
+                mermaid.init();
             })
         })
         // this.setState({edit: false, })
@@ -220,5 +246,8 @@ class BlogCreate extends React.Component<any, any> {
         )
     }
 }
+
+declare var MathJax:any;
+declare var mermaid:any;
 
 export { BlogView, BlogCreate }
