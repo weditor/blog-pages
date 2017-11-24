@@ -2,7 +2,7 @@ import * as React from 'react'
 import { HashRouter as Router, Link, Route, history } from 'react-router-dom'
 import {BlogList} from './blog'
 import {BlogView, BlogCreate} from './blog_view'
-
+import { Fetch } from '../mylib'
 
 function InnerHello(){
     return <div>myHello</div>

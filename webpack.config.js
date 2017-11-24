@@ -49,6 +49,7 @@ module.exports={
         proxy: {
             "/blog/*": `http://localhost:8090`,
             "/api_auth/*": `http://localhost:8090`,
+            "/account/*": `http://localhost:8090`,
         }
     }
 }

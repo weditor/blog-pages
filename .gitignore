@@ -59,3 +59,5 @@ typings/
 
 /statics/mathjax-2.7.2/
 /statics/mermaid/
+/statics/admin/
+/statics/rest_framework/
