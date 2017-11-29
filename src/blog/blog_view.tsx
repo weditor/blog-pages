@@ -5,6 +5,7 @@ import * as MarkdownIt from 'markdown-it'
 import * as Highlightjs from 'markdown-it-highlightjs'
 import * as MarkdownMathjax from 'markdown-it-mathjax'
 import markdownItMermaid from 'markdown-it-mermaid'
+import {Fetch } from '../mylib'
 
 
 class MarkdownView extends React.Component<any, any> {
@@ -45,7 +46,7 @@ class BlogView extends React.Component<any, any> {
         if (edit == undefined){
             edit = this.state.edit;
         }
-        fetch(`/blog/article/${this.props.match.params.blog_id}/`).then(res=>res.json())
+        Fetch(`/blog/article/${this.props.match.params.blog_id}/`).then(res=>res.json())
         .then(res=>{
             this.setState({
                 'title': res.title,
@@ -116,16 +117,15 @@ class BlogView extends React.Component<any, any> {
         if (!this.state.edit) {
             return
         }
-        fetch(`/blog/article/${this.props.match.params.blog_id}/`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
+        
+        // headers: {
+        //     'Content-Type': 'application/json'
+        // },
+        Fetch(`/blog/article/${this.props.match.params.blog_id}/`, 'PUT', {
                 'title': this.state.title,
                 'content': this.state.content,
-            })
-        })
+            }
+        )
         .then(res=>res.json())
         .then(res=>{
             console.log(res)
@@ -213,15 +213,19 @@ class BlogCreate extends React.Component<any, any> {
     }
 
     onSave() {
-        fetch(`/blog/article/`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                'title': this.state.title,
-                'content': this.state.content,
-            })
+        // fetch(`/blog/article/`, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         'title': this.state.title,
+        //         'content': this.state.content,
+        //     })
+        // })
+        Fetch(`/blog/article/`, 'post', {
+            'title': this.state.title,
+            'content': this.state.content,
         })
         .then(res=>res.json())
         .then(res=>{

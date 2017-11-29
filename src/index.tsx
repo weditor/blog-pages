@@ -26,7 +26,7 @@ class IndexPage extends React.Component<any, any> {
         this.state={
             activeNav: 1,
             auth: {
-                auth: false,
+                is_authenticated: false,
                 username: "",
             }
         }
@@ -42,10 +42,7 @@ class IndexPage extends React.Component<any, any> {
 
     onAuth() {
         Fetch('/account/profile/').then(res=>res.json()).then(res=>{
-            this.setState({auth: {
-                auth: !!(res.username),
-                username: res.username
-            }})
+            this.setState({auth: res})
         })
     }
 
@@ -65,7 +62,7 @@ class IndexPage extends React.Component<any, any> {
                             <NavItem eventKey={3}><Link onClick={()=>this.changeNav(3)} to='/blog'>Blog</Link></NavItem>
                         </Nav>
                         <Nav pullRight>
-                            {this.state.auth.auth?
+                            {this.state.auth.is_authenticated?
                             <NavItem eventKey={1}><Link onClick={()=>this.changeNav(3)} to='/login'>{this.state.auth.username}</Link></NavItem>
                             :<NavItem eventKey={1}><Link onClick={()=>this.changeNav(3)} to='/login'>Login</Link></NavItem>}
                             
