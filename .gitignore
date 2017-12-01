@@ -61,3 +61,4 @@ typings/
 /statics/mermaid/
 /statics/admin/
 /statics/rest_framework/
+/build/
