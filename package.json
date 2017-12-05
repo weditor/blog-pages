@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack-dev-server --progress --profile --colors --hot --inline",
-    "build": "webpack --progress --profile --colors",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "webpack-dev-server --progress --profile --colors --hot --inline",
+    "build": "webpack --progress --profile --colors && rm web_pages -rf && mkdir web_pages && cp ./index.html ./web_pages/ && cp ./statics/ ./web_pages/ -r && mv ./build/ ./web_pages/",
   },
   "author": "",
   "license": "ISC",
