@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --progress --profile --colors --hot --inline",
-    "build": "webpack --progress --profile --colors && rm web_pages -rf && mkdir web_pages && cp ./index.html ./web_pages/ && cp ./statics/ ./web_pages/ -r && mv ./build/ ./web_pages/",
+    "build": "webpack --progress --profile --colors && rm web_pages -rf && mkdir web_pages && cp ./index.html ./web_pages/ && cp ./statics/ ./web_pages/ -r && mv ./build/bundle.js ./web_pages/"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +14,7 @@
     "@types/react-dom": "^15.5.1",
     "awesome-typescript-loader": "^3.2.1",
     "markdown-it": "^8.4.0",
+    "markdown-it-emoji": "^1.4.0",
     "markdown-it-highlightjs": "^3.0.0",
     "markdown-it-mathjax": "^2.0.0",
     "markdown-it-mermaid": "^0.1.8",

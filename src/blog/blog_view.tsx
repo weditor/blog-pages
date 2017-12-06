@@ -1,11 +1,7 @@
 import * as React from 'react'
 import {findDOMNode} from 'react-dom'
 import { Button, Table, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
-import * as MarkdownIt from 'markdown-it'
-import * as Highlightjs from 'markdown-it-highlightjs'
-import * as MarkdownMathjax from 'markdown-it-mathjax'
-import markdownItMermaid from 'markdown-it-mermaid'
-import {Fetch } from '../mylib'
+import { Fetch, markdown } from '../mylib'
 
 
 class MarkdownView extends React.Component<any, any> {
@@ -24,9 +20,7 @@ class MarkdownView extends React.Component<any, any> {
 }
 
 class BlogView extends React.Component<any, any> {
-    md = MarkdownIt().use(Highlightjs)
-            .use(new MarkdownMathjax())
-            .use(markdownItMermaid)
+    md = markdown
     constructor(props){
         super(props);
         console.log(props)
@@ -84,7 +78,7 @@ class BlogView extends React.Component<any, any> {
                 <FormControl componentClass="textarea" rows="20" onChange={(e)=>this.setState({content: e.target.value})} value={this.state.content}/>
             </FormGroup>
         } else {
-            return <MarkdownView ref="md_view" content={this.state.content} md={this.md} />
+            return <MarkdownView ref="md_view" content={this.state.content} md={markdown} />
         }
     }
 
@@ -171,7 +165,6 @@ class BlogView extends React.Component<any, any> {
 // }
 
 class BlogCreate extends React.Component<any, any> {
-    md = MarkdownIt()
     constructor(props){
         super(props);
         // console.log(props)
