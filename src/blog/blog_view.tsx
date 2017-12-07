@@ -63,7 +63,11 @@ class BlogView extends React.Component<any, any> {
             return <div>
                 <div >
                     <span className="h2" style={{fontWeight: "bolder"}}>{this.state.title}</span>
-                    <i className="fa fa-pencil-square-o edit-btn" onClick={()=>this.onEditClick()}></i>
+                    {
+                        this.props.auth.is_authenticated?
+                        <i className="fa fa-pencil-square-o edit-btn" onClick={()=>this.onEditClick()}></i>
+                        :""
+                    }
                 </div>
                 <hr />
             </div>

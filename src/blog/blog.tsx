@@ -30,7 +30,11 @@ class BlogList extends React.Component<any, any>{
 
     render() {
         return (<div>
-            <Button bsStyle="primary" onClick={()=>this.createBlog()}><i className="fa fa-plus-circle"></i>新建</Button>
+            { 
+                (this.props.auth.is_authenticated)? 
+                <Button bsStyle="primary" onClick={()=>this.createBlog()}><i className="fa fa-plus-circle"></i>新建</Button>
+                :""
+            }
             <Table responsive>
                 <thead>
                 <tr>
