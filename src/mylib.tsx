@@ -3,6 +3,7 @@ import * as Highlightjs from 'markdown-it-highlightjs'
 import * as MarkdownMathjax from 'markdown-it-mathjax'
 import markdownItMermaid from 'markdown-it-mermaid'
 import * as MarkdownEmoji from 'markdown-it-emoji'
+import markdownItTocAndAnchor from "markdown-it-toc-and-anchor"
 import * as React from 'react'
 
 // var Cookies:any;
@@ -41,5 +42,17 @@ let markdown = MarkdownIt().use(Highlightjs)
 .use(new MarkdownMathjax())
 .use(markdownItMermaid)
 .use(MarkdownEmoji)
+.use(markdownItTocAndAnchor, {
+    toc: false, 
+    tocCallback: function(tocMarkdown, tocArray, tocHtml) {
+        console.log(tocMarkdown)
+        console.log(tocArray)
+        console.log(tocHtml)
+        let toc_header = document.getElementById("markdown-toc-header")
+        if (toc_header) {
+            toc_header.innerHTML=tocHtml
+        }
+    }
+})
 
 export {Fetch, markdown, wrapComponent}

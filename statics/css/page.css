@@ -18,3 +18,7 @@ body {
 .op-btn-group>button {
     margin: 10px;
 }
+
+#markdown-toc-header {
+    border-width: 1px;
+}

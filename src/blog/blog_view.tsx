@@ -1,6 +1,7 @@
 import * as React from 'react'
 import {findDOMNode} from 'react-dom'
-import { Button, Table, FormControl, FormGroup, ControlLabel } from 'react-bootstrap'
+import { Button, Table, FormControl, FormGroup, ControlLabel, Gri } from 'react-bootstrap'
+import { Affix, AutoAffix, Position } from 'react-overlays'
 import { Fetch, markdown } from '../mylib'
 
 
@@ -29,6 +30,7 @@ class BlogView extends React.Component<any, any> {
             edit: false,
             title: "",
             content: "",
+            show_category: false,
         }
     }
 
@@ -82,7 +84,9 @@ class BlogView extends React.Component<any, any> {
                 <FormControl componentClass="textarea" rows="20" onChange={(e)=>this.setState({content: e.target.value})} value={this.state.content}/>
             </FormGroup>
         } else {
-            return <MarkdownView ref="md_view" content={this.state.content} md={markdown} />
+            return <div id="preview-item">
+                <MarkdownView ref="md_view" content={this.state.content} md={markdown} />
+            </div>
         }
     }
 
@@ -146,27 +150,23 @@ class BlogView extends React.Component<any, any> {
         this.refresh_article(false);
     }
 
+
     render() {
         return (
             <div>
                 <form>
                     {this.render_title()}
+                    
+                    <div id="markdown-toc-header" ></div>
                     {this.render_body()}
                     {this.render_tag()}
                     {this.render_button()}
-                    {/* <div dangerouslySetInnerHTML={{ __html: this.state.article.content?this.md.render(this.state.article.content):"" }} /> */}
                 </form>
             </div>
         )
     }
 }
 
-
-// class BlogCreate extends BlogView {
-//     componentDidMount() {
-        
-//     }
-// }
 
 class BlogCreate extends React.Component<any, any> {
     constructor(props){
@@ -239,6 +239,7 @@ class BlogCreate extends React.Component<any, any> {
             <div>
                 <form>
                     {this.render_title()}
+                    <div id="markdown-toc-header"></div>
                     {this.render_body()}
                     {this.render_tag()}
                     {this.render_button()}
