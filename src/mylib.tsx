@@ -38,19 +38,39 @@ function wrapComponent(Component, auth) {
     }
 }
 
+function jump_anchor(links){
+    for(var i=0;i<links.length;i++){
+        links[i].onclick=function(e){
+            e.preventDefault()
+            let dom_a = (e.target as any)
+            let target_id = decodeURI(dom_a.hash.replace("#",""))
+            // console.log(target_id)
+            let anchorElement = document.getElementById(target_id);
+            // console.log(anchorElement)
+            if(anchorElement) { anchorElement.scrollIntoView(); }
+        }
+    }
+}
+
 let markdown = MarkdownIt().use(Highlightjs)
 .use(new MarkdownMathjax())
 .use(markdownItMermaid)
 .use(MarkdownEmoji)
 .use(markdownItTocAndAnchor, {
     toc: false, 
+    anchorLink: false,
     tocCallback: function(tocMarkdown, tocArray, tocHtml) {
-        console.log(tocMarkdown)
-        console.log(tocArray)
-        console.log(tocHtml)
+        // console.log(tocMarkdown)
+        // console.log(tocArray)
+        // console.log(tocHtml)
         let toc_header = document.getElementById("markdown-toc-header")
         if (toc_header) {
-            toc_header.innerHTML=tocHtml
+            toc_header.innerHTML=tocHtml;
+            // var links = toc_header.getElementsByTagName("a");
+            jump_anchor(toc_header.getElementsByTagName("a"))
+            // jump_anchor(document.getElementsByClassName('markdownIt-Anchor'))
+            // var in_links = document.getElementsByClassName('markdownIt-Anchor');
+            
         }
     }
 })

@@ -42,7 +42,7 @@ class BlogView extends React.Component<any, any> {
         if (edit == undefined){
             edit = this.state.edit;
         }
-        Fetch(`/blog/article/${this.props.match.params.blog_id}/`).then(res=>res.json())
+        Fetch(`/api/blog/article/${this.props.match.params.blog_id}/`).then(res=>res.json())
         .then(res=>{
             this.setState({
                 'title': res.title,
@@ -123,7 +123,7 @@ class BlogView extends React.Component<any, any> {
         // headers: {
         //     'Content-Type': 'application/json'
         // },
-        Fetch(`/blog/article/${this.props.match.params.blog_id}/`, 'PUT', {
+        Fetch(`/api/blog/article/${this.props.match.params.blog_id}/`, 'PUT', {
                 'title': this.state.title,
                 'content': this.state.content,
             }
@@ -210,7 +210,7 @@ class BlogCreate extends React.Component<any, any> {
     }
 
     onSave() {
-        // fetch(`/blog/article/`, {
+        // fetch(`/api/blog/article/`, {
         //     method: 'POST',
         //     headers: {
         //         'Content-Type': 'application/json'
@@ -220,18 +220,18 @@ class BlogCreate extends React.Component<any, any> {
         //         'content': this.state.content,
         //     })
         // })
-        Fetch(`/blog/article/`, 'post', {
+        Fetch(`/api/blog/article/`, 'post', {
             'title': this.state.title,
             'content': this.state.content,
         })
         .then(res=>res.json())
         .then(res=>{
-            this.props.history.push(`/blog/view/${res.id}/`);
+            this.props.history.push(`/api/blog/view/${res.id}/`);
         })
     }
     
     onCancel() {
-        this.props.history.push(`/blog/`);
+        this.props.history.push(`/api/blog/`);
     }
 
     render() {
