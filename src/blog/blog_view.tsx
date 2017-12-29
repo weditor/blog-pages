@@ -1,8 +1,10 @@
 import * as React from 'react'
 import {findDOMNode} from 'react-dom'
-import { Button, Table, FormControl, FormGroup, ControlLabel, Gri } from 'react-bootstrap'
+import { Button, Form, Table, FormControl, FormGroup, ControlLabel, InputGroup, ListGroup, ListGroupItem, MenuItem, Clearfix } from 'react-bootstrap'
 import { Affix, AutoAffix, Position } from 'react-overlays'
 import { Fetch, markdown } from '../mylib'
+import { debounce } from 'lodash'
+import {TypeAhead, AsyncTypeahead} from 'react-bootstrap-typeahead'
 
 
 class MarkdownView extends React.Component<any, any> {
@@ -156,7 +158,6 @@ class BlogView extends React.Component<any, any> {
             <div>
                 <form>
                     {this.render_title()}
-                    
                     <div id="markdown-toc-header" ></div>
                     {this.render_body()}
                     {this.render_tag()}
@@ -169,16 +170,33 @@ class BlogView extends React.Component<any, any> {
 
 
 class BlogCreate extends React.Component<any, any> {
+
     constructor(props){
         super(props);
         // console.log(props)
         this.state = {
             title: "",
             content: "",
+            tags: [],
+            tag_list: ["List 1", "List 2"],
+            tag_loading: false,
         }
     }
 
     componentDidMount() {
+    }
+    
+    query_tag_list(value) {
+        value = (value || "")
+        this.setState({tag_loading: true})
+        fetch(`/api/blog/tag/?name__icontains=${value}`)
+        .then(req=>req.json())
+        .then(data=>{
+            console.log(data)
+            this.setState({tag_list: data.map(item=>item.name), tag_loading: false})
+        }).catch(e=>{
+            this.setState({tag_loading: false})
+        })
     }
 
     render_title() {
@@ -196,8 +214,19 @@ class BlogCreate extends React.Component<any, any> {
     }
 
     render_tag() {
-        return <div>
-            </div>
+        return <AsyncTypeahead
+            multiple
+            allowNew
+            bsSize="sm"
+            isLoading={this.state.tag_loading}
+            options={this.state.tag_list}
+            labelKey="add label"
+            minLength={1}
+            onSearch={(value)=>this.query_tag_list(value)}
+            placeholder="增加标签"
+            newSelectionPrefix="+ 新标签:  "
+            onChange={item=>this.setState({tags: item})}
+        />
     }
 
     render_button() {
@@ -210,19 +239,10 @@ class BlogCreate extends React.Component<any, any> {
     }
 
     onSave() {
-        // fetch(`/api/blog/article/`, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         'title': this.state.title,
-        //         'content': this.state.content,
-        //     })
-        // })
         Fetch(`/api/blog/article/`, 'post', {
             'title': this.state.title,
             'content': this.state.content,
+            'tags': this.state.tags,
         })
         .then(res=>res.json())
         .then(res=>{
@@ -237,13 +257,11 @@ class BlogCreate extends React.Component<any, any> {
     render() {
         return (
             <div>
-                <form>
-                    {this.render_title()}
-                    <div id="markdown-toc-header"></div>
-                    {this.render_body()}
-                    {this.render_tag()}
-                    {this.render_button()}
-                </form>
+                {this.render_title()}
+                <div id="markdown-toc-header"></div>
+                {this.render_body()}
+                {this.render_tag()}
+                {this.render_button()}
             </div>
         )
     }

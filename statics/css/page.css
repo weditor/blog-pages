@@ -22,3 +22,7 @@ body {
 #markdown-toc-header {
     border-width: 1px;
 }
+
+.drop-list a {
+    padding: 1px
+}
