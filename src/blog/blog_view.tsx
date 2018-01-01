@@ -189,11 +189,11 @@ class BlogCreate extends React.Component<any, any> {
     query_tag_list(value) {
         value = (value || "")
         this.setState({tag_loading: true})
-        fetch(`/api/blog/tag/?name__icontains=${value}`)
+        fetch(`/api/blog/tag/?search=${value}`)
         .then(req=>req.json())
         .then(data=>{
             console.log(data)
-            this.setState({tag_list: data.map(item=>item.name), tag_loading: false})
+            this.setState({tag_list: data.map(item=>`${item.name}--${item.pinyin}`), tag_loading: false})
         }).catch(e=>{
             this.setState({tag_loading: false})
         })
