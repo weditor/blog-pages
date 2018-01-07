@@ -26,10 +26,8 @@ class BlogView extends React.Component<any, any> {
     md = markdown
     constructor(props){
         super(props);
-        console.log(props)
         this.state = {
             show_edit: false,
-            edit: false,
             title: "",
             content: "",
             show_category: false,
@@ -41,15 +39,11 @@ class BlogView extends React.Component<any, any> {
     }
 
     refresh_article(edit=undefined) {
-        if (edit == undefined){
-            edit = this.state.edit;
-        }
         Fetch(`/api/blog/article/${this.props.match.params.blog_id}/`).then(res=>res.json())
         .then(res=>{
             this.setState({
                 'title': res.title,
                 'content': res.content,
-                'edit': edit
             }, ()=>{
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this.refs['md_view'])]);
                 mermaid.init();
@@ -58,38 +52,23 @@ class BlogView extends React.Component<any, any> {
     }
 
     render_title() {
-        if (this.state.edit){
-            return <FormGroup>
-                <ControlLabel>标题</ControlLabel>
-                <FormControl onChange={(e)=>this.setState({title: e.target.value})} value={this.state.title}/>
-            </FormGroup>
-        } else {
-            return <div>
-                <div >
-                    <span className="h2" style={{fontWeight: "bolder"}}>{this.state.title}</span>
-                    {
-                        this.props.auth.is_authenticated?
-                        <i className="fa fa-pencil-square-o edit-btn" onClick={()=>this.onEditClick()}></i>
-                        :""
-                    }
-                </div>
-                <hr />
+        return <div>
+            <div >
+                <span className="h2" style={{fontWeight: "bolder"}}>{this.state.title}</span>
+                {
+                    this.props.auth.is_authenticated?
+                    <i className="fa fa-pencil-square-o edit-btn" onClick={()=>this.onEditClick()}></i>
+                    :""
+                }
             </div>
-        }
-        
+            <hr />
+        </div>
     }
 
     render_body() {
-        if(this.state.edit) {
-            return <FormGroup>
-                <ControlLabel>内容</ControlLabel>
-                <FormControl componentClass="textarea" rows="20" onChange={(e)=>this.setState({content: e.target.value})} value={this.state.content}/>
-            </FormGroup>
-        } else {
-            return <div id="preview-item">
-                <MarkdownView ref="md_view" content={this.state.content} md={markdown} />
-            </div>
-        }
+        return <div id="preview-item">
+            <MarkdownView ref="md_view" content={this.state.content} md={markdown} />
+        </div>
     }
 
     render_tag() {
@@ -97,62 +76,10 @@ class BlogView extends React.Component<any, any> {
             </div>
     }
 
-    render_button() {
-        if (!this.state.edit) {
-            return <div>
-                </div>
-        }
-        return <div>
-            <div className="op-btn-group">
-                <Button bsStyle="danger" onClick={()=>this.onCancel()}>取消</Button>
-                <Button bsStyle="primary" onClick={()=>this.onSave()}>保存</Button>
-            </div>
-        </div>
-    }
-
     onEditClick() {
-        if (this.state.edit) {
-            return
-        }
-        this.setState({edit: true, })
-    }
-
-    onSave() {
-        if (!this.state.edit) {
-            return
-        }
-        
-        // headers: {
-        //     'Content-Type': 'application/json'
-        // },
-        Fetch(`/api/blog/article/${this.props.match.params.blog_id}/`, 'PUT', {
-                'title': this.state.title,
-                'content': this.state.content,
-            }
-        )
-        .then(res=>res.json())
-        .then(res=>{
-            console.log(res)
-            this.setState({
-                'title': res.title,
-                'content': res.content,
-                'edit': false
-            }, ()=>{
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this.refs['md_view'])]);
-                mermaid.init();
-            })
-        })
-        // this.setState({edit: false, })
+        this.props.history.push(`/blog/edit/${this.props.match.params.blog_id}/`);
     }
     
-    onCancel() {
-        if (!this.state.edit) {
-            return
-        }
-        this.refresh_article(false);
-    }
-
-
     render() {
         return (
             <div>
@@ -161,7 +88,6 @@ class BlogView extends React.Component<any, any> {
                     <div id="markdown-toc-header" ></div>
                     {this.render_body()}
                     {this.render_tag()}
-                    {this.render_button()}
                 </form>
             </div>
         )
@@ -169,7 +95,7 @@ class BlogView extends React.Component<any, any> {
 }
 
 
-class BlogCreate extends React.Component<any, any> {
+class BlogEdit extends React.Component<any, any> {
 
     constructor(props){
         super(props);
@@ -184,8 +110,27 @@ class BlogCreate extends React.Component<any, any> {
     }
 
     componentDidMount() {
+        console.log('fuckyou didmount')
+        console.log(this.blog_id())
+        if (this.blog_id()) {
+            Fetch(`/api/blog/article/${this.blog_id()}/`).then(res=>res.json())
+            .then(res=>{
+                this.setState({
+                    'title': res.title,
+                    'content': res.content,
+                    'tags': res.tags.map(item=>item.name),
+                }, ()=>{
+                    MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this.refs['md_view'])]);
+                    mermaid.init();
+                })
+            })
+        }
     }
     
+    blog_id() {
+        return this.props.match.params.blog_id
+    }
+
     query_tag_list(value) {
         value = (value || "")
         this.setState({tag_loading: true})
@@ -239,19 +184,25 @@ class BlogCreate extends React.Component<any, any> {
     }
 
     onSave() {
-        Fetch(`/api/blog/article/`, 'post', {
+        let url = this.blog_id()?`/api/blog/article/${this.blog_id()}/`:`/api/blog/article/`
+        let method = this.blog_id()?'put': 'post'
+        Fetch(url, method, {
             'title': this.state.title,
             'content': this.state.content,
             'tags': this.state.tags,
         })
         .then(res=>res.json())
         .then(res=>{
-            this.props.history.push(`/api/blog/view/${res.id}/`);
+            this.props.history.push(`/blog/view/${res.id}/`);
         })
     }
     
     onCancel() {
-        this.props.history.push(`/api/blog/`);
+        if(this.blog_id()) {
+            this.props.history.push(`/blog/view/${this.blog_id()}/`);
+        } else {
+            this.props.history.push(`/blog/`);
+        }
     }
 
     render() {
@@ -270,4 +221,4 @@ class BlogCreate extends React.Component<any, any> {
 declare var MathJax:any;
 declare var mermaid:any;
 
-export { BlogView, BlogCreate }
+export { BlogView, BlogEdit }
