@@ -55,11 +55,13 @@ body {
     border-radius:5px;
 }
 
+.article-head .label {
+    background: #30811b;
+    margin: 5px;
+    color: white;
+}
+
 #markdown-toc-header, #markdown-toc-header a {
-    /* background-color: #f6f5f3b3;
-    padding: 5px;
-    margin-bottom: 10px */
-    /* color: black; */
     font-size: large;
     font-weight: bold;
     background-color: #b7a194

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {findDOMNode} from 'react-dom'
-import { Button, Form, Table, FormControl, FormGroup, ControlLabel, InputGroup, ListGroup, ListGroupItem, MenuItem, Clearfix } from 'react-bootstrap'
+import { Button, Form, Table, FormControl, FormGroup, ControlLabel, InputGroup, ListGroup, ListGroupItem, MenuItem, Clearfix, Label } from 'react-bootstrap'
 import { Affix, AutoAffix, Position } from 'react-overlays'
 import { Fetch, markdown } from '../mylib'
 import { debounce } from 'lodash'
@@ -30,6 +30,7 @@ class BlogView extends React.Component<any, any> {
             show_edit: false,
             title: "",
             content: "",
+            tags: [],
             show_category: false,
         }
     }
@@ -44,6 +45,7 @@ class BlogView extends React.Component<any, any> {
             this.setState({
                 'title': res.title,
                 'content': res.content,
+                'tags': res.tags,
             }, ()=>{
                 MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this.refs['md_view'])]);
                 mermaid.init();
@@ -60,6 +62,9 @@ class BlogView extends React.Component<any, any> {
                     <i className="fa fa-pencil-square-o edit-btn" onClick={()=>this.onEditClick()}></i>
                     :""
                 }
+                <div style={{display: "inline"}}>
+                    {this.state.tags.map(item=><Label bsStyle="info" key={item.id}>{item.name}</Label>)}
+                </div>
             </div>
             <hr />
         </div>
@@ -72,8 +77,12 @@ class BlogView extends React.Component<any, any> {
     }
 
     render_tag() {
-        return <div>
-            </div>
+        return <div className="article-tags">
+            {/* <hr />
+            {'标签: '}
+            {this.state.tags.map(item=><Label bsStyle="info" key={item.id}>{item.name}</Label>)}
+            <hr /> */}
+        </div>
     }
 
     onEditClick() {
@@ -104,7 +113,7 @@ class BlogEdit extends React.Component<any, any> {
             title: "",
             content: "",
             tags: [],
-            tag_list: ["List 1", "List 2"],
+            tag_list: [],
             tag_loading: false,
         }
     }
@@ -137,8 +146,10 @@ class BlogEdit extends React.Component<any, any> {
         fetch(`/api/blog/tag/?search=${value}`)
         .then(req=>req.json())
         .then(data=>{
-            console.log(data)
-            this.setState({tag_list: data.map(item=>`${item.name}--${item.pinyin}`), tag_loading: false})
+            let options = data.map(item=>`${item.name}--${item.pinyin}`)
+            options.concat(this.state.tags)
+            console.log(options)
+            this.setState({tag_list: options, tag_loading: false})
         }).catch(e=>{
             this.setState({tag_loading: false})
         })
@@ -159,18 +170,22 @@ class BlogEdit extends React.Component<any, any> {
     }
 
     render_tag() {
+        console.log(this.state.tags)
+        console.log(this.state.tag_list.length? this.state.tag_list: this.state.tags)
+        // console.log(this.query_tag_list(""))
         return <AsyncTypeahead
             multiple
             allowNew
             bsSize="sm"
+            selected={this.state.tags}
             isLoading={this.state.tag_loading}
-            options={this.state.tag_list}
+            options={this.state.tag_list.length? this.state.tag_list: this.state.tags}
             labelKey="add label"
             minLength={1}
             onSearch={(value)=>this.query_tag_list(value)}
             placeholder="增加标签"
             newSelectionPrefix="+ 新标签:  "
-            onChange={item=>this.setState({tags: item})}
+            onChange={item=>this.setState({tags: item.map(tag=>tag.split('--')[0])})}
         />
     }
 
