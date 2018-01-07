@@ -35,7 +35,7 @@ class BlogList extends React.Component<any, any>{
                 <Button bsStyle="primary" onClick={()=>this.createBlog()}><i className="fa fa-plus-circle"></i>新建</Button>
                 :""
             }
-            <Table responsive>
+            <Table className="article-table" responsive>
                 <thead>
                 <tr>
                     <th>#</th>
@@ -48,7 +48,7 @@ class BlogList extends React.Component<any, any>{
                         return(
                             <tr key={ item.id }>
                                 <td>{ index+1 }</td>
-                                <td><Link to={this.props.match.url+'/view/' + item.id} >
+                                <td><Link to={`${this.props.match.url}/view/${item.id}`} >
                                     { item["title"] }
                                 </Link></td>
                                 <td>{ item["create_time"] }</td>

@@ -53,7 +53,7 @@ class BlogView extends React.Component<any, any> {
 
     render_title() {
         return <div>
-            <div >
+            <div className="article-head">
                 <span className="h2" style={{fontWeight: "bolder"}}>{this.state.title}</span>
                 {
                     this.props.auth.is_authenticated?
@@ -66,7 +66,7 @@ class BlogView extends React.Component<any, any> {
     }
 
     render_body() {
-        return <div id="preview-item">
+        return <div id="preview-item" className="article-body">
             <MarkdownView ref="md_view" content={this.state.content} md={markdown} />
         </div>
     }
@@ -145,14 +145,14 @@ class BlogEdit extends React.Component<any, any> {
     }
 
     render_title() {
-        return <FormGroup>
+        return <FormGroup className="article-head">
             <ControlLabel>标题</ControlLabel>
             <FormControl onChange={(e)=>this.setState({title: e.target.value})} value={this.state.title}/>
         </FormGroup>
     }
 
     render_body() {
-        return <FormGroup>
+        return <FormGroup className="article-body">
             <ControlLabel>内容</ControlLabel>
             <FormControl componentClass="textarea" rows="20" onChange={(e)=>this.setState({content: e.target.value})} value={this.state.content}/>
         </FormGroup>
@@ -184,6 +184,7 @@ class BlogEdit extends React.Component<any, any> {
     }
 
     onSave() {
+        console.log(this.blog_id())
         let url = this.blog_id()?`/api/blog/article/${this.blog_id()}/`:`/api/blog/article/`
         let method = this.blog_id()?'put': 'post'
         Fetch(url, method, {
@@ -201,7 +202,7 @@ class BlogEdit extends React.Component<any, any> {
         if(this.blog_id()) {
             this.props.history.push(`/blog/view/${this.blog_id()}/`);
         } else {
-            this.props.history.push(`/blog/`);
+            this.props.history.push(`/blog`);
         }
     }
 

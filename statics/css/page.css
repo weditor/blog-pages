@@ -1,6 +1,7 @@
 
 body {
     margin: 20px;
+    background-image: url("/statics/background.jpg")
 }
 
 .edit-btn {
@@ -26,3 +27,41 @@ body {
 .drop-list a {
     padding: 1px
 }
+
+/* .article-table th {
+    color: #c7c7c7;
+}
+
+.article-table td {
+    color: #ffffff;
+} */
+
+.article-table a {
+    /* color: #95f3d5; */
+    font-weight: bold;
+    font-family: Cambria, Cochin, Georgia, Times, Times New Roman, serif；
+} 
+
+.article-table {
+    background-color: #f7edd9;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius:5px;
+}
+
+.article-head, .article-body{
+    background-color: #f6f5f3b3;
+    padding: 5px;
+    border-radius:5px;
+}
+
+#markdown-toc-header, #markdown-toc-header a {
+    /* background-color: #f6f5f3b3;
+    padding: 5px;
+    margin-bottom: 10px */
+    /* color: black; */
+    font-size: large;
+    font-weight: bold;
+    background-color: #b7a194
+}
+
