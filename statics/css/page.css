@@ -50,7 +50,7 @@ body {
 }
 
 .article-head, .article-body{
-    background-color: #f6f5f3b3;
+    background-color: #f6f5f3e3;
     padding: 5px;
     border-radius:5px;
 }
@@ -64,6 +64,10 @@ body {
 #markdown-toc-header, #markdown-toc-header a {
     font-size: large;
     font-weight: bold;
-    background-color: #b7a194
+    background-color: #181818b3;
+    border-radius: 5px;
 }
 
+#markdown-toc-header {
+    color: white;
+}
