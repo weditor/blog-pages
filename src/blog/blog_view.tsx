@@ -148,7 +148,7 @@ class BlogEdit extends React.Component<any, any> {
         .then(data=>{
             let options = data.map(item=>`${item.name}--${item.pinyin}`)
             options.concat(this.state.tags)
-            console.log(options)
+            // console.log(options)
             this.setState({tag_list: options, tag_loading: false})
         }).catch(e=>{
             this.setState({tag_loading: false})
@@ -185,7 +185,10 @@ class BlogEdit extends React.Component<any, any> {
             onSearch={(value)=>this.query_tag_list(value)}
             placeholder="增加标签"
             newSelectionPrefix="+ 新标签:  "
-            onChange={item=>this.setState({tags: item.map(tag=>tag.split('--')[0])})}
+            onChange={item=>this.setState({tags: item.map(tag=>{
+                return tag["add label"]?tag["add label"]:tag.split('--')[0]
+            })
+            })}
         />
     }
 

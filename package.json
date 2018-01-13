@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --progress --profile --colors --hot --inline",
-    "build": "webpack --progress --profile --colors && rm web_pages -rf && mkdir web_pages && cp ./index.html ./web_pages/ && cp ./statics/ ./web_pages/ -r && mv ./build/bundle.js ./web_pages/"
+    "build": "webpack --progress --profile --colors && rm web_pages -rf && mkdir web_pages && cp ./index.html ./web_pages/ && cp ./statics/ ./web_pages/ -r && mv ./build/bundle.js ./web_pages/statics"
   },
   "author": "",
   "license": "ISC",
