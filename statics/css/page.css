@@ -71,3 +71,7 @@ body {
 #markdown-toc-header {
     color: white;
 }
+
+#login-form label {
+    color: #f6f2df;
+}

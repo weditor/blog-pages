@@ -39,7 +39,7 @@ class LoginView extends React.Component<any, any> {
     }
 
     render() {
-        return <div>
+        return <div id="login-form">
             <BS.Grid>
                 <BS.Row>
                     <BS.Col sm={6} smOffset={3} md={4} mdOffset={4}>
