@@ -1,6 +1,6 @@
 import * as React from 'react'
 import {findDOMNode} from 'react-dom'
-import { Button, Form, Table, FormControl, FormGroup, ControlLabel, InputGroup, ListGroup, ListGroupItem, MenuItem, Clearfix, Label } from 'react-bootstrap'
+import { Button, Form, Table, FormControl, FormGroup, ControlLabel, InputGroup, ListGroup, ListGroupItem, MenuItem, Clearfix, Label, Checkbox } from 'react-bootstrap'
 import { Affix, AutoAffix, Position } from 'react-overlays'
 import { Fetch, markdown } from '../mylib'
 import { debounce } from 'lodash'
@@ -112,6 +112,7 @@ class BlogEdit extends React.Component<any, any> {
         this.state = {
             title: "",
             content: "",
+            is_private: false,
             tags: [],
             tag_list: [],
             tag_loading: false,
@@ -119,14 +120,13 @@ class BlogEdit extends React.Component<any, any> {
     }
 
     componentDidMount() {
-        console.log('fuckyou didmount')
-        console.log(this.blog_id())
         if (this.blog_id()) {
             Fetch(`/api/blog/article/${this.blog_id()}/`).then(res=>res.json())
             .then(res=>{
                 this.setState({
                     'title': res.title,
                     'content': res.content,
+                    'is_private': res.is_private,
                     'tags': res.tags.map(item=>item.name),
                 }, ()=>{
                     MathJax.Hub.Queue(["Typeset",MathJax.Hub, findDOMNode(this.refs['md_view'])]);
@@ -148,7 +148,6 @@ class BlogEdit extends React.Component<any, any> {
         .then(data=>{
             let options = data.map(item=>`${item.name}--${item.pinyin}`)
             options.concat(this.state.tags)
-            // console.log(options)
             this.setState({tag_list: options, tag_loading: false})
         }).catch(e=>{
             this.setState({tag_loading: false})
@@ -170,8 +169,8 @@ class BlogEdit extends React.Component<any, any> {
     }
 
     render_tag() {
-        console.log(this.state.tags)
-        console.log(this.state.tag_list.length? this.state.tag_list: this.state.tags)
+        // console.log(this.state.tags)
+        // console.log(this.state.tag_list.length? this.state.tag_list: this.state.tags)
         // console.log(this.query_tag_list(""))
         return <AsyncTypeahead
             multiple
@@ -201,14 +200,21 @@ class BlogEdit extends React.Component<any, any> {
         </div>
     }
 
+    render_other() {
+        return <FormGroup >
+            <Checkbox onClick={(e)=>this.setState({is_private: e.target.checked})} checked={this.state.is_private}>设置为私密</Checkbox>
+        </FormGroup>
+    }
+
     onSave() {
-        console.log(this.blog_id())
+        // console.log(this.blog_id())
         let url = this.blog_id()?`/api/blog/article/${this.blog_id()}/`:`/api/blog/article/`
         let method = this.blog_id()?'put': 'post'
         Fetch(url, method, {
             'title': this.state.title,
             'content': this.state.content,
             'tags': this.state.tags,
+            'is_private': this.state.is_private,
         })
         .then(res=>res.json())
         .then(res=>{
@@ -231,6 +237,7 @@ class BlogEdit extends React.Component<any, any> {
                 <div id="markdown-toc-header"></div>
                 {this.render_body()}
                 {this.render_tag()}
+                {this.render_other()}
                 {this.render_button()}
             </div>
         )

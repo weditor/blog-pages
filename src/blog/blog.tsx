@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { Button, Table } from 'react-bootstrap'
 import * as MarkdownIt from 'markdown-it'
 import { Link } from 'react-router-dom'
-
+import {Fetch} from '../mylib'
 
 
 
@@ -13,7 +13,7 @@ class BlogList extends React.Component<any, any>{
         this.state = {
             blog_list: [],
         }
-        fetch('/api/blog/article/?format=json')
+        Fetch('/api/blog/article/?format=json')
         .then(res=>res.json())
         .then(res=>{
             this.setState({'blog_list': res});
