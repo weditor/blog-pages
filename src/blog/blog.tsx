@@ -13,7 +13,7 @@ class BlogList extends React.Component<any, any>{
         this.state = {
             blog_list: [],
         }
-        Fetch('/api/blog/article/?format=json')
+        Fetch('/api/blog/article/?format=json&sort_by=-create_time')
         .then(res=>res.json())
         .then(res=>{
             this.setState({'blog_list': res});
