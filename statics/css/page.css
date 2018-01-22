@@ -75,3 +75,9 @@ body {
 #login-form label {
     color: #f6f2df;
 }
+
+.lonely-form label {
+    color: white;
+    font-weight: bolder;
+    margin-top: 10px;
+}

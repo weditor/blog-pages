@@ -192,7 +192,8 @@ class BlogEdit extends React.Component<any, any> {
     }
 
     render_button() {
-        return <div>
+        return <div className="lonely-form">
+            <Checkbox  inline onClick={(e)=>this.setState({is_private: e.target.checked})} checked={this.state.is_private} bsSize="lg">设置为私密</Checkbox>
             <div className="op-btn-group">
                 <Button bsStyle="danger" onClick={()=>this.onCancel()}>取消</Button>
                 <Button bsStyle="primary" onClick={()=>this.onSave()}>保存</Button>
@@ -200,14 +201,7 @@ class BlogEdit extends React.Component<any, any> {
         </div>
     }
 
-    render_other() {
-        return <FormGroup >
-            <Checkbox onClick={(e)=>this.setState({is_private: e.target.checked})} checked={this.state.is_private}>设置为私密</Checkbox>
-        </FormGroup>
-    }
-
     onSave() {
-        // console.log(this.blog_id())
         let url = this.blog_id()?`/api/blog/article/${this.blog_id()}/`:`/api/blog/article/`
         let method = this.blog_id()?'put': 'post'
         Fetch(url, method, {
@@ -237,7 +231,6 @@ class BlogEdit extends React.Component<any, any> {
                 <div id="markdown-toc-header"></div>
                 {this.render_body()}
                 {this.render_tag()}
-                {this.render_other()}
                 {this.render_button()}
             </div>
         )
